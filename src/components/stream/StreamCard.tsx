@@ -1,137 +1,106 @@
 
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Eye, Clock, MoreVertical, Share, Flag, CheckCircle } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Eye, Circle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface StreamCardProps {
   stream: {
     id: string;
     title: string;
-    creator: string;
-    creatorAvatar: string;
+    creator: {
+      name: string;
+      avatar: string;
+      verified: boolean;
+    };
     thumbnail: string;
-    viewerCount: number;
+    viewers: number;
     category: string;
     duration: string;
     isLive: boolean;
-    isVerified: boolean;
   };
 }
 
 export const StreamCard = ({ stream }: StreamCardProps) => {
+  const navigate = useNavigate();
+
   const formatViewerCount = (count: number) => {
-    if (count >= 1000) {
+    if (count >= 1000000) {
+      return `${(count / 1000000).toFixed(1)}M`;
+    } else if (count >= 1000) {
       return `${(count / 1000).toFixed(1)}K`;
     }
     return count.toString();
   };
 
+  const handleClick = () => {
+    navigate(`/stream/${stream.id}`);
+  };
+
   return (
-    <Card className="group cursor-pointer overflow-hidden hover:scale-[1.02] transition-transform duration-200">
-      <div className="relative aspect-video">
-        {/* Thumbnail */}
-        <img 
-          src={stream.thumbnail} 
+    <div 
+      className="group cursor-pointer transition-transform duration-200 hover:scale-[1.02]"
+      onClick={handleClick}
+    >
+      <div className="relative aspect-video bg-muted rounded-lg overflow-hidden mb-3">
+        <img
+          src={stream.thumbnail}
           alt={stream.title}
-          className="w-full h-full object-cover bg-muted"
-          onError={(e) => {
-            (e.target as HTMLImageElement).src = `https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=225&fit=crop&crop=center&auto=format&q=75`;
-          }}
+          className="w-full h-full object-cover"
         />
         
-        {/* Overlay Elements */}
-        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-        
-        {/* Live Badge */}
         {stream.isLive && (
-          <Badge className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs font-semibold px-2 py-1">
+          <Badge 
+            variant="destructive" 
+            className="absolute top-2 right-2 bg-red-600 text-white text-xs font-medium"
+          >
+            <Circle className="w-2 h-2 mr-1 fill-current animate-pulse" />
             LIVE
           </Badge>
         )}
         
-        {/* Duration */}
-        <Badge 
-          variant="secondary" 
-          className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1"
-        >
+        <div className="absolute bottom-2 left-2 bg-black/80 text-white text-xs px-2 py-1 rounded">
           {stream.duration}
-        </Badge>
-        
-        {/* Viewer Count */}
-        <div className="absolute bottom-2 left-2 flex items-center space-x-1 bg-black/80 text-white text-xs px-2 py-1 rounded">
-          <Eye className="w-3 h-3" />
-          <span>{formatViewerCount(stream.viewerCount)}</span>
         </div>
         
-        {/* Hover Actions */}
-        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="w-8 h-8 bg-black/80 hover:bg-black/60">
-                <MoreVertical className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>
-                <Clock className="w-4 h-4 mr-2" />
-                Watch Later
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Share className="w-4 h-4 mr-2" />
-                Share
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Flag className="w-4 h-4 mr-2" />
-                Report
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+          <Eye className="w-3 h-3" />
+          {formatViewerCount(stream.viewers)}
         </div>
       </div>
       
-      <CardContent className="p-3">
-        <div className="flex space-x-3">
-          {/* Creator Avatar */}
-          <div className="relative flex-shrink-0">
-            <Avatar className="w-9 h-9">
-              <AvatarImage src={stream.creatorAvatar} />
-              <AvatarFallback>{stream.creator.charAt(0)}</AvatarFallback>
-            </Avatar>
-            {stream.isLive && (
-              <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-primary border-2 border-background rounded-full" />
-            )}
-          </div>
+      <div className="flex gap-3">
+        <Avatar className="w-9 h-9 flex-shrink-0">
+          <AvatarImage src={stream.creator.avatar} alt={stream.creator.name} />
+          <AvatarFallback>{stream.creator.name.charAt(0)}</AvatarFallback>
+        </Avatar>
+        
+        <div className="flex-1 min-w-0">
+          <h3 className="font-medium text-foreground text-sm line-clamp-2 mb-1 group-hover:text-primary transition-colors">
+            {stream.title}
+          </h3>
           
-          {/* Stream Info */}
-          <div className="flex-1 min-w-0">
-            <h3 className="font-medium text-sm line-clamp-2 text-foreground mb-1">
-              {stream.title}
-            </h3>
-            
-            <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-              <span>{stream.creator}</span>
-              {stream.isVerified && (
-                <CheckCircle className="w-3 h-3 text-primary" />
+          <div className="text-xs text-muted-foreground space-y-1">
+            <div className="flex items-center gap-1">
+              <span>{stream.creator.name}</span>
+              {stream.creator.verified && (
+                <div className="w-3 h-3 bg-blue-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-[8px]">✓</span>
+                </div>
               )}
             </div>
             
-            <div className="text-xs text-muted-foreground mt-1">
-              <span>{formatViewerCount(stream.viewerCount)} viewers</span>
-              <span className="mx-1">•</span>
-              <span>{stream.category}</span>
+            <div className="flex items-center gap-2">
+              <span>{formatViewerCount(stream.viewers)} viewers</span>
+              <span>•</span>
+              <Badge variant="secondary" className="text-[10px] px-1 py-0">
+                {stream.category}
+              </Badge>
             </div>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
