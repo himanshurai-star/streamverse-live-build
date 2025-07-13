@@ -6,7 +6,7 @@ export const APP_CONFIG = {
 };
 
 export const API_URLS = {
-  base: process.env.REACT_APP_API_URL || 'http://localhost:3000/api',
+  base: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api',
   auth: '/auth',
   streams: '/streams',
   users: '/users'
