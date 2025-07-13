@@ -22,8 +22,11 @@ import {
   Settings,
   User,
   LogOut,
-  Mic
+  Mic,
+  Sun,
+  Moon
 } from 'lucide-react';
+import { useTheme } from '@/hooks/useTheme';
 
 interface DashboardHeaderProps {
   onToggleSidebar: () => void;
@@ -37,6 +40,7 @@ export const DashboardHeader = ({
   onSearchChange 
 }: DashboardHeaderProps) => {
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <header className="fixed top-0 w-full bg-card/95 backdrop-blur-sm border-b border-border z-50">
@@ -100,6 +104,20 @@ export const DashboardHeader = ({
             className="md:hidden text-muted-foreground hover:text-foreground"
           >
             <Search className="w-5 h-5" />
+          </Button>
+
+          {/* Theme Toggle */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleTheme}
+            className="text-muted-foreground hover:text-foreground"
+          >
+            {theme === 'dark' ? (
+              <Sun className="h-5 w-5" />
+            ) : (
+              <Moon className="h-5 w-5" />
+            )}
           </Button>
 
           {/* Create/Go Live Button */}

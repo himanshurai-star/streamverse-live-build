@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { StreamViewerHeader } from '@/components/stream-viewer/StreamViewerHeader';
 import { VideoPlayer } from '@/components/stream-viewer/VideoPlayer';
 import { StreamInfo } from '@/components/stream-viewer/StreamInfo';
+import { LiveChat } from '@/components/stream-viewer/LiveChat';
+import { RelatedStreams } from '@/components/stream-viewer/RelatedStreams';
 import { useParams } from 'react-router-dom';
 
 const StreamViewer = () => {
@@ -24,7 +26,7 @@ const StreamViewer = () => {
     viewers: 1247,
     startedAt: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
     isLive: true,
-    description: 'Join me as we build the most amazing city in this city builder game! We\'re going for a modern metropolitan vibe with lots of skyscrapers and efficient transport systems.',
+    description: 'Join me as we build the most amazing city in this city builder game! We\'re going for a modern metropolitan vibe with lots of skyscrapers and efficient transport systems. Don\'t forget to hit that subscribe button and turn on notifications for more epic gaming content!',
     tags: ['Gaming', 'City Builder', 'Strategy', 'Live']
   };
 
@@ -55,23 +57,21 @@ const StreamViewer = () => {
           </div>
 
           {/* Sidebar */}
-          <div className={`${theaterMode ? 'lg:w-[15%]' : 'lg:w-[30%]'} min-w-0`}>
-            {/* Chat will go here */}
-            <div className="bg-card border border-border rounded-lg p-4 h-[400px] lg:h-[600px]">
-              <h3 className="font-semibold text-foreground mb-4">Live Chat</h3>
-              <div className="text-muted-foreground text-sm">
-                Chat will be implemented in the next phase
-              </div>
+          <div className={`${theaterMode ? 'lg:w-[15%]' : 'lg:w-[30%]'} min-w-0 space-y-4`}>
+            {/* Live Chat */}
+            <div className={`${theaterMode ? 'h-[600px]' : 'h-[400px] lg:h-[600px]'}`}>
+              <LiveChat 
+                streamId={streamData.id}
+                viewerCount={streamData.viewers}
+              />
             </div>
             
-            {/* Related Streams */}
+            {/* Related Streams - Hidden in theater mode */}
             {!theaterMode && (
-              <div className="mt-4 bg-card border border-border rounded-lg p-4">
-                <h3 className="font-semibold text-foreground mb-4">Related Streams</h3>
-                <div className="text-muted-foreground text-sm">
-                  Related streams will be implemented in the next phase
-                </div>
-              </div>
+              <RelatedStreams 
+                currentStreamId={streamData.id}
+                category={streamData.category}
+              />
             )}
           </div>
         </div>
