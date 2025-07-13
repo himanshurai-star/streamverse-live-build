@@ -3,13 +3,15 @@ import React, { useState } from 'react';
 import { StreamViewerHeader } from '@/components/stream-viewer/StreamViewerHeader';
 import { VideoPlayer } from '@/components/stream-viewer/VideoPlayer';
 import { StreamInfo } from '@/components/stream-viewer/StreamInfo';
-import { LiveChat } from '@/components/stream-viewer/LiveChat';
+import { EnhancedLiveChat } from '@/components/stream-viewer/EnhancedLiveChat';
+import { ViewerEngagement } from '@/components/stream-viewer/ViewerEngagement';
 import { RelatedStreams } from '@/components/stream-viewer/RelatedStreams';
 import { useParams } from 'react-router-dom';
 
 const StreamViewer = () => {
   const { streamId } = useParams();
   const [theaterMode, setTheaterMode] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
 
   // Mock stream data - in real app, this would come from API
   const streamData = {
@@ -30,6 +32,19 @@ const StreamViewer = () => {
     tags: ['Gaming', 'City Builder', 'Strategy', 'Live']
   };
 
+  const handleFollow = () => {
+    setIsFollowing(!isFollowing);
+  };
+
+  const handleSendGift = (gift: any) => {
+    console.log('Sending gift:', gift);
+  };
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    console.log('Stream shared!');
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <StreamViewerHeader 
@@ -43,7 +58,7 @@ const StreamViewer = () => {
           theaterMode ? 'lg:gap-2' : 'lg:gap-6'
         }`}>
           {/* Main Content */}
-          <div className={`flex-1 ${theaterMode ? 'lg:w-[85%]' : 'lg:w-[70%]'}`}>
+          <div className={`flex-1 ${theaterMode ? 'lg:w-[70%]' : 'lg:w-[60%]'}`}>
             <VideoPlayer 
               streamData={streamData}
               theaterMode={theaterMode}
@@ -57,14 +72,26 @@ const StreamViewer = () => {
           </div>
 
           {/* Sidebar */}
-          <div className={`${theaterMode ? 'lg:w-[15%]' : 'lg:w-[30%]'} min-w-0 space-y-4`}>
-            {/* Live Chat */}
-            <div className={`${theaterMode ? 'h-[600px]' : 'h-[400px] lg:h-[600px]'}`}>
-              <LiveChat 
+          <div className={`${theaterMode ? 'lg:w-[30%]' : 'lg:w-[40%]'} min-w-0 space-y-4`}>
+            {/* Enhanced Live Chat */}
+            <div className={`${theaterMode ? 'h-[600px]' : 'h-[400px] lg:h-[500px]'}`}>
+              <EnhancedLiveChat 
                 streamId={streamData.id}
                 viewerCount={streamData.viewers}
+                onSendGift={handleSendGift}
               />
             </div>
+            
+            {/* Viewer Engagement - Only show when not in theater mode */}
+            {!theaterMode && (
+              <ViewerEngagement
+                streamId={streamData.id}
+                isFollowing={isFollowing}
+                onFollow={handleFollow}
+                onSendGift={handleSendGift}
+                onShare={handleShare}
+              />
+            )}
             
             {/* Related Streams - Hidden in theater mode */}
             {!theaterMode && (
