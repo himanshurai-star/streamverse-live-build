@@ -16,6 +16,9 @@ import NotFound from "./pages/NotFound";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import VerifyOTP from "./pages/auth/VerifyOTP";
+import UserProfile from "./pages/UserProfile";
+import Settings from "./pages/Settings";
+import CreatorApplication from "./pages/CreatorApplication";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +40,9 @@ const App = () => (
           <Route path="/auth/register" element={<Register />} />
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/verify-otp" element={<VerifyOTP />} />
+          <Route path="/profile/:username" element={<UserProfile />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/creator/application" element={<CreatorApplication />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
