@@ -13,7 +13,7 @@ export const Header = () => {
         {/* Logo */}
         <div 
           className="flex items-center space-x-3 cursor-pointer group"
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/dashboard')}
         >
           <div className="w-8 h-8 bg-primary-green rounded-lg flex items-center justify-center group-hover:opacity-90 transition-opacity">
             <Video className="w-5 h-5 text-white" />
