@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,6 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
+import CreatorDashboard from "./pages/CreatorDashboard";
+import GoLiveSetup from "./pages/GoLiveSetup";
+import LiveStreaming from "./pages/LiveStreaming";
 import StreamViewer from "./pages/StreamViewer";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/auth/Register";
@@ -23,6 +25,9 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/creator/dashboard" element={<CreatorDashboard />} />
+          <Route path="/creator/go-live" element={<GoLiveSetup />} />
+          <Route path="/creator/live" element={<LiveStreaming />} />
           <Route path="/stream/:streamId" element={<StreamViewer />} />
           <Route path="/auth/register" element={<Register />} />
           <Route path="/auth/login" element={<Login />} />
