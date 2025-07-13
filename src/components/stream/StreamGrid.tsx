@@ -7,79 +7,91 @@ interface StreamGridProps {
   searchQuery: string;
 }
 
-// Mock data for demonstration
+// Mock data for demonstration - updated to match StreamCard interface
 const mockStreams = [
   {
     id: '1',
     title: 'Epic Gaming Session - Building the Ultimate City!',
-    creator: 'GamerPro123',
-    creatorAvatar: '/placeholder-avatar.jpg',
+    creator: {
+      name: 'GamerPro123',
+      avatar: '/placeholder-avatar.jpg',
+      verified: true
+    },
     thumbnail: '/placeholder-thumbnail.jpg',
-    viewerCount: 1247,
+    viewers: 1247,
     category: 'Gaming',
     duration: '2:34:45',
-    isLive: true,
-    isVerified: true
+    isLive: true
   },
   {
     id: '2',
     title: 'Digital Art Live - Character Design Process',
-    creator: 'ArtistMaria',
-    creatorAvatar: '/placeholder-avatar.jpg',
+    creator: {
+      name: 'ArtistMaria',
+      avatar: '/placeholder-avatar.jpg',
+      verified: false
+    },
     thumbnail: '/placeholder-thumbnail.jpg',
-    viewerCount: 856,
+    viewers: 856,
     category: 'Art',
     duration: '1:15:20',
-    isLive: true,
-    isVerified: false
+    isLive: true
   },
   {
     id: '3',
     title: 'Cooking Italian Pasta from Scratch',
-    creator: 'ChefCarlos',
-    creatorAvatar: '/placeholder-avatar.jpg',
+    creator: {
+      name: 'ChefCarlos',
+      avatar: '/placeholder-avatar.jpg',
+      verified: true
+    },
     thumbnail: '/placeholder-thumbnail.jpg',
-    viewerCount: 2341,
+    viewers: 2341,
     category: 'Food',
     duration: '0:45:12',
-    isLive: true,
-    isVerified: true
+    isLive: true
   },
   {
     id: '4',
     title: 'React Tutorial - Building Modern Apps',
-    creator: 'DevTutor',
-    creatorAvatar: '/placeholder-avatar.jpg',
+    creator: {
+      name: 'DevTutor',
+      avatar: '/placeholder-avatar.jpg',
+      verified: false
+    },
     thumbnail: '/placeholder-thumbnail.jpg',
-    viewerCount: 623,
+    viewers: 623,
     category: 'Technology',
     duration: '3:12:08',
-    isLive: true,
-    isVerified: false
+    isLive: true
   },
   {
     id: '5',
     title: 'Morning Yoga Flow - Energize Your Day',
-    creator: 'YogaZen',
-    creatorAvatar: '/placeholder-avatar.jpg',
+    creator: {
+      name: 'YogaZen',
+      avatar: '/placeholder-avatar.jpg',
+      verified: true
+    },
     thumbnail: '/placeholder-thumbnail.jpg',
-    viewerCount: 189,
+    viewers: 189,
     category: 'Fitness',
     duration: '0:32:15',
-    isLive: true,
-    isVerified: true
+    isLive: true
   },
   {
     id: '6',
     title: 'Jazz Piano Improvisation Session',
-    creator: 'JazzMaestro',
-    creatorAvatar: '/placeholder-avatar.jpg',
+    creator: {
+      name: 'JazzMaestro',
+      avatar: '/placeholder-avatar.jpg',
+      verified: false
+    },
     thumbnail: '/placeholder-thumbnail.jpg',
-    viewerCount: 445,
+    viewers: 445,
     category: 'Music',
     duration: '1:28:33',
-    isLive: true,
-    isVerified: false
+    isLive: true
   }
 ];
 
@@ -89,7 +101,7 @@ export const StreamGrid = ({ category, searchQuery }: StreamGridProps) => {
     const matchesCategory = category === 'All' || stream.category === category;
     const matchesSearch = searchQuery === '' || 
       stream.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      stream.creator.toLowerCase().includes(searchQuery.toLowerCase());
+      stream.creator.name.toLowerCase().includes(searchQuery.toLowerCase());
     
     return matchesCategory && matchesSearch;
   });
