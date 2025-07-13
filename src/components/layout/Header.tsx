@@ -1,60 +1,45 @@
 
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Play, Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '../ui/button';
+import { Video } from 'lucide-react';
 
-export function Header() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+export const Header = () => {
+  const navigate = useNavigate();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-gray-800">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
-            <div className="w-8 h-8 bg-[#006239] rounded-lg flex items-center justify-center group-hover:opacity-90 transition-opacity">
-              <Play className="w-4 h-4 text-white fill-white" />
-            </div>
-            <span className="text-xl font-semibold text-white">VoltStream</span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:border-[#006239]">
-              Sign up
-            </Button>
-            <Button size="sm" className="bg-[#006239] hover:bg-[#004d2e] text-white border-[#006239]">
-              Get started
-            </Button>
+    <header className="fixed top-0 w-full bg-bg-primary/80 backdrop-blur-sm border-b border-bg-tertiary z-50">
+      <div className="max-w-screen-xl mx-auto px-6 h-16 flex items-center justify-between">
+        {/* Logo */}
+        <div 
+          className="flex items-center space-x-3 cursor-pointer group"
+          onClick={() => navigate('/')}
+        >
+          <div className="w-8 h-8 bg-primary-green rounded-lg flex items-center justify-center group-hover:opacity-90 transition-opacity">
+            <Video className="w-5 h-5 text-white" />
           </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-gray-300 hover:text-white transition-colors"
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          <span className="text-xl font-semibold text-text-primary group-hover:opacity-90 transition-opacity">
+            VoltStream
+          </span>
         </div>
 
-        {/* Mobile Navigation */}
-        <div className={cn(
-          "md:hidden transition-all duration-200 ease-in-out",
-          isMobileMenuOpen ? "max-h-48 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
-        )}>
-          <div className="py-4 space-y-3">
-            <Button variant="ghost" size="sm" className="w-full justify-start text-gray-300 hover:text-white hover:border-[#006239]">
-              Sign up
-            </Button>
-            <Button size="sm" className="w-full bg-[#006239] hover:bg-[#004d2e] text-white border-[#006239]">
-              Get started
-            </Button>
-          </div>
+        {/* Navigation Actions */}
+        <div className="flex items-center space-x-4">
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate('/auth/login')}
+            className="text-text-secondary hover:text-primary-green hover:border-primary-green"
+          >
+            Sign in
+          </Button>
+          <Button 
+            onClick={() => navigate('/auth/register')}
+            className="bg-primary-green hover:bg-primary-green-hover text-white"
+          >
+            Get started
+          </Button>
         </div>
       </div>
     </header>
   );
-}
+};
